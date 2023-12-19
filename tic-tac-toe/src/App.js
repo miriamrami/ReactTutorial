@@ -40,13 +40,20 @@ const [squares, setSquares] = useState(Array(9).fill(null));
 function handleClick(i){ //NEW handeClick function
 //This function creates a copy of the squares array(nextSquares) with the slice array method
 //handleClick updates the nextSquares array to add X to the squares
-//calling setSquares lets react know the state of the component has changed
+
+//If the square is already filled,
+// you will return early before the board state gets updated
+  if (squares[i]){
+    return
+  }
+//This function allows players to alternate between X and O as they click on squares
   const nextSquares = squares.slice();
   if (xIsNext){
     nextSquares[i] = "X";
   }else{
     nextSquares[i] = "O";
   }
+//calling setSquares lets react know the state of the component has changed  
   setSquares(nextSquares);
   setXIsNext(!xIsNext);
 }
