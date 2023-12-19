@@ -28,6 +28,9 @@ function Square({value, onSquareClick}){
 //The parent component can pass that state back to the children via props. Keeping children & parent in sync.
 
 export default function Board(){
+//Set the first move to be of "X" by default. 
+  const [xIsNext, setXIsNext] = useState[true];
+
 //squares defaults to an array of 9 squares
 //the array has 9 squares initialized to null
 //Filling the board later will look like the following:
@@ -39,8 +42,13 @@ function handleClick(i){ //NEW handeClick function
 //handleClick updates the nextSquares array to add X to the squares
 //calling setSquares lets react know the state of the component has changed
   const nextSquares = squares.slice();
-  nextSquares[i] = "X";
+  if (xIsNext){
+    nextSquares[i] = "X";
+  }else{
+    nextSquares[i] = "O";
+  }
   setSquares(nextSquares);
+  setXIsNext(!xIsNext);
 }
 
   return(
