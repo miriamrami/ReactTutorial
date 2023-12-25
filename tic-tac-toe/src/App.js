@@ -42,9 +42,10 @@ function handleClick(i){ //NEW handeClick function
 //handleClick updates the nextSquares array to add X to the squares
 
 //If the square is already filled,
-// you will return early before the board state gets updated
-  if (squares[i]){
-    return
+// you will return early before the board state gets updated.
+//Call calculateWinner to check if a player has won.
+  if (squares[i] || calculateWinner(squares)){
+    return;
   }
 //This function allows players to alternate between X and O as they click on squares
   const nextSquares = squares.slice();
@@ -58,8 +59,17 @@ function handleClick(i){ //NEW handeClick function
   setXIsNext(!xIsNext);
 }
 
+const winner = calculateWinner(squares);
+  let status;
+  if (winner){
+    status = "Winner: " + winner;
+  }else{
+    status = "Next player:" + (xIsNext ? "X" : "O");
+  }
+
   return(
     <>
+    <div className='status'>{status}</div>
     <div className="board-row">
       <Square value = {squares[1]} onSquareClick={() => handleClick(0)}/>
       <Square value = {squares[2]} onSquareClick={() => handleClick(1)}/>
@@ -77,4 +87,29 @@ function handleClick(i){ //NEW handeClick function
     </div>
   </>
   );
+
+}
+
+function calculateWinner(squares){
+  //This function takes an array of 9 squares, checks for a winner and
+  // returns X, O, or null. This function can be placed before or after the
+  // Board function.
+
+  const lines = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+  ];
+  for (let i=0; i < lines.length; i++) {
+    const[a,b,c] = lines[i];
+    if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+      return squares[a];
+    }
+  }
+  return null;
 }
